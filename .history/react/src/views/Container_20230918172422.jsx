@@ -35,8 +35,9 @@ export default function Container() {
     { name: "Type", selector: "type" },
     { name: "Category", selector: "category" },
     { name: "Status", selector: "status" },
-    { name: "Line", selector: "line" },
-    { name: "Booking", selector: "Booking" },
+    { name: "Live", selector: "live" },
+    { name: "Live", selector: "live" },
+    { name: "Live", selector: "live" },
     {
       name: "Actions",
       cell: (row) => (

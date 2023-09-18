@@ -101,17 +101,17 @@
           )}
           {!loading && (
             <form onSubmit={onSubmit}>
-            <input className="input_form" value={container.num_container} onChange={ev => setContainer({ ...container, num_container: ev.target.value })} placeholder="Number of container" />
-              <input className="input_form" value={container.name_container} onChange={ev => setContainer({ ...container, name_container: ev.target.value })} placeholder="Name of container" />
-              <input className="input_form" value={container.type} onChange={ev => setContainer({ ...container, type: ev.target.value })} placeholder="Type" />
-              <input className="input_form" value={container.category} onChange={ev => setContainer({ ...container, category: ev.target.value })} placeholder="Category" />
-              <input className="input_form" value={container.status} onChange={ev => setContainer({ ...container, Status: ev.target.value })} placeholder="status" />
-              <input className="input_form" value={container.live} onChange={ev => setContainer({ ...container, live: ev.target.value })} placeholder="Live" />
-              <input className="input_form" value={container.code_location_tp} onChange={ev => setContainer({ ...container, code_location_tp: ev.target.value })} placeholder="Code of location T.P" />
-              <input className="input_form" value={container.tp_name} onChange={ev => setContainer({ ...container, tp_name: ev.target.value })} placeholder="Name of T.P" />
-              <input className="input_form" value={container.position} onChange={ev => setContainer({ ...container, position: ev.target.value })} placeholder="Position" />
-              <input className="input_form" type="date" onChange={ev => setContainer({ ...container, date_in: ev.target.value })} placeholder="Date in" />
-              <input className="input_form" type="date" onChange={ev => setContainer({ ...container, date_out: ev.target.value })} placeholder="date out" />
+            <input value={container.num_container} onChange={ev => setContainer({ ...container, num_container: ev.target.value })} placeholder="Number of container" />
+              <input value={container.name_container} onChange={ev => setContainer({ ...container, name_container: ev.target.value })} placeholder="Name of container" />
+              <input value={container.type} onChange={ev => setContainer({ ...container, type: ev.target.value })} placeholder="Type" />
+              <input value={container.category} onChange={ev => setContainer({ ...container, category: ev.target.value })} placeholder="Category" />
+              <input value={container.status} onChange={ev => setContainer({ ...container, Status: ev.target.value })} placeholder="status" />
+              <input value={container.live} onChange={ev => setContainer({ ...container, live: ev.target.value })} placeholder="Live" />
+              <input value={container.code_location_tp} onChange={ev => setContainer({ ...container, code_location_tp: ev.target.value })} placeholder="Code of location T.P" />
+              <input value={container.tp_name} onChange={ev => setContainer({ ...container, tp_name: ev.target.value })} placeholder="Name of T.P" />
+              <input value={container.position} onChange={ev => setContainer({ ...container, position: ev.target.value })} placeholder="Position" />
+              <input type="date" onChange={ev => setContainer({ ...container, date_in: ev.target.value })} placeholder="Date in" />
+              <input type="date" onChange={ev => setContainer({ ...container, date_out: ev.target.value })} placeholder="date out" />
               <button className="btn">Save</button>
             </form>
           )}

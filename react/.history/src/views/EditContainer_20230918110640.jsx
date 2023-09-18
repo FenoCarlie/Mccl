@@ -9,7 +9,7 @@ export default function EditContainer() {
   
   const [container, setContainer] = useState({
     id_container: null,
-    num_container: '',
+    num_container: 'test',
     name_container: '',
     type: '',
     category: '',
@@ -22,8 +22,6 @@ export default function EditContainer() {
     date_out: ''
   });
 
-  //const [container, setContainer] = useState(null);
-
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setNotification } = useStateContext();
@@ -34,8 +32,8 @@ export default function EditContainer() {
       axios.get(`http://localhost:8081/container/${id_container}`)
         .then(({ data }) => {
           setLoading(false);
-          setContainer(data[0]);
-          consol.log(data);
+          setContainer(data);
+          consol.log(data)
         })
         .catch(() => {
           setLoading(false);
@@ -67,6 +65,7 @@ export default function EditContainer() {
   return (
     <div>
       {container.id_container && <h1>Update container: {container.num_container}</h1>}
+      {console.log(container.num_container)}
       <div className="card animated fadeInDown">
         {loading && (
           <div className="text-center">

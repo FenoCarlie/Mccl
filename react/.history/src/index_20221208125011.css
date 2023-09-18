@@ -20,7 +20,7 @@ body {
     background-color: #f6f6f6;
 }
 
-.input_form {
+input {
     outline: 0;
     background: #ffffff;
     width: 100%;
@@ -241,9 +241,3 @@ table > tbody > tr > td {
         transform: translateY(0);
     }
 }
-
-
-.table-container {
-    height: 300px; /* Set the desired height for the container */
-    overflow: auto; /* Enable scrolling */
-  }

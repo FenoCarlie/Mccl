@@ -22,8 +22,6 @@ export default function EditContainer() {
     date_out: ''
   });
 
-  //const [container, setContainer] = useState(null);
-
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setNotification } = useStateContext();
@@ -34,8 +32,8 @@ export default function EditContainer() {
       axios.get(`http://localhost:8081/container/${id_container}`)
         .then(({ data }) => {
           setLoading(false);
-          setContainer(data[0]);
-          consol.log(data);
+          setContainer(data);
+          consol.log(setContainer)
         })
         .catch(() => {
           setLoading(false);

@@ -31,12 +31,11 @@ export default function Container() {
 
   const columns = [
     { name: "Number of container", selector: "num_container" },
-    { name: "Client", selector: "client_name" },
+    { name: "Name of container", selector: "name_container" },
     { name: "Type", selector: "type" },
     { name: "Category", selector: "category" },
     { name: "Status", selector: "status" },
-    { name: "Line", selector: "line" },
-    { name: "Booking", selector: "Booking" },
+    { name: "Live", selector: "live" },
     {
       name: "Actions",
       cell: (row) => (

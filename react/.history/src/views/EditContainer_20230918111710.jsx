@@ -7,7 +7,7 @@ export default function EditContainer() {
   const navigate = useNavigate();
   let { id_container } = useParams();
   
-  const [container, setContainer] = useState({
+  /*const [container, setContainer] = useState({
     id_container: null,
     num_container: '',
     name_container: '',
@@ -20,9 +20,9 @@ export default function EditContainer() {
     position: '',
     date_in: '',
     date_out: ''
-  });
+  });*/
 
-  //const [container, setContainer] = useState(null);
+  const [container, setContainer] = useState(null);
 
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -34,8 +34,8 @@ export default function EditContainer() {
       axios.get(`http://localhost:8081/container/${id_container}`)
         .then(({ data }) => {
           setLoading(false);
-          setContainer(data[0]);
-          consol.log(data);
+          setContainer(data);
+          consol.log(container)
         })
         .catch(() => {
           setLoading(false);

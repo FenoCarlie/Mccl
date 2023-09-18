@@ -31,12 +31,11 @@ export default function Container() {
 
   const columns = [
     { name: "Number of container", selector: "num_container" },
-    { name: "Client", selector: "client_name" },
+    { name: "Name of container", selector: "name_container" },
     { name: "Type", selector: "type" },
     { name: "Category", selector: "category" },
     { name: "Status", selector: "status" },
-    { name: "Line", selector: "line" },
-    { name: "Booking", selector: "Booking" },
+    { name: "Live", selector: "live" },
     {
       name: "Actions",
       cell: (row) => (
@@ -89,29 +88,19 @@ export default function Container() {
       });
   };
 
-  useEffect(() => {
-    const handleFilter = () => {
-      const filteredData = container.filter((item) => {
-        return (
-          item.num_container.includes(searchQuery) ||
-          item.name_container.includes(searchQuery) ||
-          item.type.includes(searchQuery) ||
-          item.category.includes(searchQuery) ||
-          item.status.includes(searchQuery) ||
-          item.live.includes(searchQuery)
-        );
-      });
-      setFilteredContainer(filteredData);
-    };
-
-    handleFilter(); // Initial filtering when component mounts
-
-    const debounceTimer = setTimeout(() => {
-      handleFilter(); // Filtering after a small delay to avoid excessive updates
-    }, 300);
-
-    return () => clearTimeout(debounceTimer); // Clear timeout when component unmounts
-  }, [searchQuery, container]);
+  const handleFilter = () => {
+    const filteredData = container.filter((item) => {
+      return (
+        item.num_container.includes(searchQuery) ||
+        item.name_container.includes(searchQuery) ||
+        item.type.includes(searchQuery) ||
+        item.category.includes(searchQuery) ||
+        item.status.includes(searchQuery) ||
+        item.live.includes(searchQuery)
+      );
+    });
+    setFilteredContainer(filteredData);
+  };
 
   return (
     <div>

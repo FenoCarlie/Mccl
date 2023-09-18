@@ -34,7 +34,7 @@ export default function EditContainer() {
       axios.get(`http://localhost:8081/container/${id_container}`)
         .then(({ data }) => {
           setLoading(false);
-          setContainer(data[0]);
+          setContainer(data);
           consol.log(data);
         })
         .catch(() => {
