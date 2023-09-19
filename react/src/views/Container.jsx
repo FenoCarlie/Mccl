@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import InfoContainer from "./modals/InfoContainer";
+import {iconsImgs} from "../icon/icone"
 
 export default function Container() {
   const [container, setContainer] = useState([]);
   const [filteredContainer, setFilteredContainer] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [id_container, setSelectedId] = useState(null);
 
   const customStyles = {
     headRow: {
@@ -30,30 +34,32 @@ export default function Container() {
   };
 
   const columns = [
+    { name: "Id_container", selector: "id_container"},
     { name: "Number of container", selector: "num_container" },
     { name: "Client", selector: "client_name" },
     { name: "Type", selector: "type" },
     { name: "Category", selector: "category" },
     { name: "Status", selector: "status" },
     { name: "Line", selector: "line" },
-    { name: "Booking", selector: "Booking" },
+    { name: "Booking", selector: "booking" },
     {
-      name: "Actions",
       cell: (row) => (
         <div>
-          <Link className="btn-edit" to={`/container/${row.id_container}`}>
-            Update
-          </Link>
           <button
-            className="btn-delete"
-            onClick={() => onDeleteClick(row.id_container)}
-          >
-            Delete
+              className="openModalBtn"
+              onClick={() => {
+                setModalOpen(true);
+                setSelectedId(row.id_container); // Set the id of the clicked row
+              }}
+            >
+              <img src={iconsImgs.menu_points} alt="" className="info_icon"/>
           </button>
         </div>
       ),
-    },
+    }
   ];
+
+  const columnsToDisplay = columns.filter((column) => column.selector !== 'id_container');
 
   const getContainer = () => {
     setLoading(true);
@@ -74,31 +80,17 @@ export default function Container() {
     getContainer();
   }, []);
 
-  const onDeleteClick = (idContainer) => {
-    if (!window.confirm("Are you sure you want to delete this data?")) {
-      return;
-    }
-    axios
-      .delete(`http://localhost:8081/delete/${idContainer}`)
-      .then((response) => {
-        getContainer();
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("An error occurred while deleting the container:", error);
-      });
-  };
-
   useEffect(() => {
     const handleFilter = () => {
       const filteredData = container.filter((item) => {
         return (
-          item.num_container.includes(searchQuery) ||
-          item.name_container.includes(searchQuery) ||
-          item.type.includes(searchQuery) ||
-          item.category.includes(searchQuery) ||
-          item.status.includes(searchQuery) ||
-          item.live.includes(searchQuery)
+          item.num_container?.includes(searchQuery) ||
+          item.client?.includes(searchQuery) ||
+          item.type?.includes(searchQuery) ||
+          item.category?.includes(searchQuery) ||
+          item.status?.includes(searchQuery) ||
+          item.booking?.includes(searchQuery) ||
+          item.line?.includes(searchQuery)
         );
       });
       setFilteredContainer(filteredData);
@@ -124,23 +116,27 @@ export default function Container() {
           }}
         >
           <h1>Container</h1>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Link className="btn-add" to="/container/new">
-            Add new
-          </Link>
+          
+          <div className="action"></div>
+            <div class="search-box">
+              <button class="btn-search"><i src={iconsImgs.loupe} alt=""/> <i/></button>
+              <input type="text" className="input-search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Type to Search..."/>
+            </div>
+            <Link className="btn-add" to="/container/new">
+              Add new
+            </Link>
+            </div>
         </div>
         <div className="card animated fadeInDown .table-container">
           <DataTable
-            columns={columns}
+            columns={columnsToDisplay}
             data={filteredContainer}
             customStyles={customStyles}
             pagination
           />
         </div>
+        {modalOpen && <InfoContainer selectedId={id_container} setOpenModal={setModalOpen} />}
+        {console.log(id_container)}
       </div>
     </div>
   );
