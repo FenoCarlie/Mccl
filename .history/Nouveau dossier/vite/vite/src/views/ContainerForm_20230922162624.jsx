@@ -456,18 +456,6 @@
                     <label htmlFor="status" className="input-label"> Status </label>
                     <span className="input-highlight"></span>
                   </div>
-                  <div className="input-container">
-                    <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
-                      {optionsTp.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
-                    <span className="input-highlight"></span>
-                  </div>
                 </div>
 
                 {selectedTransport === 'Truck' && (
@@ -513,6 +501,18 @@
                     </div>
                   </div>
                 )}
+                  <div className="input-container">
+                    <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
+                      {optionsTp.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
+                    <span className="input-highlight"></span>
+                  </div>
 
                 <div className="align">
                   <div className="input-container">
@@ -601,23 +601,28 @@
 
                 <div className="align">
                   </div>
-                <button className="btn">Save</button>
-              </form>
-              )}
-            </div>
+                            <button className="btn">Save</button>
+                          </form>
+                        )}
+                  </div>
+                </div>
+                <div className="card card_width">
+                  <div className="form_search_new">
+                    <input className="input" placeholder="Type your text" required="" type="text"/>
+                    <span className="input-border"></span>
+                  </div>
+            <DataTable
+                columns={columnsToDisplay}
+                data={filteredContainer}
+                customStyles={customStyles}
+              />
+              {console.log('id in form' + id_get)}
           </div>
           <div className="card card_width">
-            <div className="form_search_new">
-              <input className="input" placeholder="Type your text" required="" type="text"/>
-              <span className="input-border"></span>
-            </div>
-            <DataTable columns={columnsToDisplay} data={filteredContainer} customStyles={customStyles} />
-          </div>
-          <div className="card card_width">
-            <button className="button_pers" onClick={() => {
+            <button onClick={() => {
                   setModalOpen(true); // Set the id of the clicked row
                 }}>Add new client</button>
-            <button className="button_pers top">Add new transport</button>
+            <button>Add new transport</button>
           </div>
         </div>
       </>

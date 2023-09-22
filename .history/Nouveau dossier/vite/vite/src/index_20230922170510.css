@@ -732,7 +732,7 @@ table > tbody > tr > td {
 }
 
 .top{
-  margin-top: 15px;
+  top: 15px
 }
 
 .Type {

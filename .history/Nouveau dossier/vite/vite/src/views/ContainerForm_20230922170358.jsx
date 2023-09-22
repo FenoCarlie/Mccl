@@ -617,7 +617,7 @@
             <button className="button_pers" onClick={() => {
                   setModalOpen(true); // Set the id of the clicked row
                 }}>Add new client</button>
-            <button className="button_pers top">Add new transport</button>
+            <button className="button_pers">Add new transport</button>
           </div>
         </div>
       </>

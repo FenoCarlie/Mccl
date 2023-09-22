@@ -177,15 +177,6 @@ table > tbody > tr > td {
     width: 100%;
   }
 
-  /* Input error message */
-.input-error-message {
-  position: absolute; /* Ajustez cette valeur pour régler la distance entre le champ et le message */
-  left: 0;
-  font-size: 12.5px;
-  color: red;
-  transition: all 0.3s ease;
-}
-
 /* Login/Signup forms*/
 
 .login-signup-form {
@@ -719,20 +710,14 @@ table > tbody > tr > td {
  }
 
  .button_pers {
-  background-color: transparent;
   border: none;
-  font-family: 'Open Sans';
-  font-size: 15px;
+  background-color: transparent;
 }
 
 .button_pers:hover {
   background-color: #64636311;
   height: 25px;
   border-radius: 15px;
-}
-
-.top{
-  margin-top: 15px;
 }
 
 .Type {

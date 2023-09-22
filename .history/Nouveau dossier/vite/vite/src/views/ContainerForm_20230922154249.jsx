@@ -405,157 +405,161 @@
                 </div>
 
                 <div className="align">
-                  <div className="input-container">
-                    <select className="input-field" value={type} onChange={handleSelectType} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Type </option>
-                      {optionsType.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="type" className="input-label"> Type </label>
-                    <span className="input-highlight"></span>
-                  </div>
+                        <div className="input-container">
+                          <select className="input-field" value={type} onChange={handleSelectType} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Type </option>
+                            {optionsType.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        <label htmlFor="type" className="input-label"> Type </label>
+                        <span className="input-highlight"></span>
+                      </div>
+                        
+                      
+                        <div className="input-container">
+                          <select className="input-field" value={category} onChange={handleSelectCategory} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Category </option>
+                            {optionsCategory.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        <label htmlFor="category" className="input-label"> Category </label>
+                        <span className="input-highlight"></span>
+                      </div>
 
-                  <div className="input-container">
-                    <select className="input-field" value={typeTransport} onChange={handleSelectTypeTransport} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Transport </option>
-                      {optionsTypeTransport.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="type" className="input-label"> Transport </label>
-                    <span className="input-highlight"></span>
-                  </div>
+                      <div className="input-container">
+                          <select className="input-field" value={typeTransport} onChange={handleSelectTypeTransport} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Transport </option>
+                            {optionsTypeTransport.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        <label htmlFor="type" className="input-label"> Transport </label>
+                        <span className="input-highlight"></span>
+                      </div>
+                      
+                    </div>
 
-                  <div className="input-container">
-                    <select className="input-field" value={category} onChange={handleSelectCategory} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Category </option>
-                      {optionsCategory.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="category" className="input-label"> Category </label>
-                    <span className="input-highlight"></span>
-                  </div>
+                    {selectedTransport === 'Truck' && (
+                    <div className="input-container">
+                      
+                    </div>
+                  )}
 
-                  <div className="input-container">
-                    <select className="input-field" value={status} onChange={handleSelectStatus} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Status </option>
-                      {optionsStatus.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="status" className="input-label"> Status </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                  <div className="input-container">
-                    <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
-                      {optionsTp.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                </div>
+                  {selectedTransport === 'Rail' && (
+                    <div className="input-container">
+                      
+                    </div>
+                  )}
 
-                {selectedTransport === 'Truck' && (
+                    <div className="input-container">
+                          <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
+                            {optionsTp.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
+                        <span className="input-highlight"></span>
+                      </div>
+                      <div className="input-container">
+                          <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
+                            {optionsTransport.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        <label htmlFor="transport" className="input-label"> Transport </label>
+                        <span className="input-highlight"></span>
+                      </div>
+                      <div className="input-container">
+                          <select className="input-field" value={status} onChange={handleSelectStatus} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Status </option>
+                            {optionsStatus.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        <label htmlFor="status" className="input-label"> Status </label>
+                        <span className="input-highlight"></span>
+                      </div>
+
+                    <div className="align">
+                    <div className="input-container">
+                  <input placeholder="Tare" className="input-field" type="text" value={container.tare}
+                    onChange={(ev) => setContainer({ ...container, tare: ev.target.value })}
+                  />
+                      <label htmlFor="position" className="input-label">
+                        Tare
+                      </label>
+                      <span className="input-highlight"></span>
+                      </div>
+                        <div className="input-container">
+                      <input placeholder="Gross weight" className="input-field" type="text" value={container.gross_weight}
+                        onChange={(ev) => setContainer({ ...container, gross_weight: ev.target.value })}
+                      />
+                      <label htmlFor="gross_weight" className="input-label">
+                        Gross weight
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+
+                    <div className="input-container">
+                      <input placeholder="Weight in cum" className="input-field" type="text" value={container.weight_cum}
+                        onChange={(ev) => setContainer({ ...container, weight_cum: ev.target.value })}
+                      />
+                      <label htmlFor="weight_cum" className="input-label">
+                        Weight in cum
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+
+                    <div className="input-container">
+                      <input placeholder="weight departure" className="input-field" type="text" value={container.weight_dep}
+                        onChange={(ev) => setContainer({ ...container, weight_dep: ev.target.value })}
+                      />
+                      <label htmlFor="weight_dep" className="input-label">
+                        weight departure
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                        </div>
+
                   <div className="align">
                     <div className="input-container">
-                      <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
-                        <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
-                        {optionsTransport.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      <label htmlFor="transport" className="input-label"> Transport </label>
+                      <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
+                        placeholder="Date in"
+                      />
+                      <label htmlFor="date_in" className="input-label">
+                        Date in
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+
+                    <div className="input-container">
+                      <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
+                          setContainer({ ...container, date_out: ev.target.value })
+                        }
+                        placeholder="Date out"
+                      />
+                      <label htmlFor="date_out" className="input-label">
+                        Date out
+                      </label>
                       <span className="input-highlight"></span>
                     </div>
                     <div className="input-container">
-                      <input placeholder="N° Truck" className="input-field" type="text" value={container.num_truck} onChange={(ev) => setContainer({ ...container, num_truck: ev.target.value })} />
-                      <label htmlFor="num_truck" className="input-label"> N° Truck </label>
-                      <span className="input-highlight"></span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedTransport === 'Rail' && (
-                  <div className="align">
-                    <div className="input-container">
-                      <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
-                        <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
-                        {optionsTransport.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      <label htmlFor="transport" className="input-label"> Transport </label>
-                      <span className="input-highlight"></span>
-                    </div>
-                    <div className="input-container">
-                      <input placeholder="N° wagon" className="input-field" type="text" value={container.num_wagon} onChange={(ev) => setContainer({ ...container, num_wagon: ev.target.value })} />
-                      <label htmlFor="num_wagon" className="input-label"> N° Wagon </label>
-                      <span className="input-highlight"></span>
-                    </div>
-                  </div>
-                )}
-
-                <div className="align">
-                  <div className="input-container">
-                    <input placeholder="Tare" className="input-field" type="text" value={container.tare}
-                      onChange={(ev) => setContainer({ ...container, tare: ev.target.value })} />
-                    <label htmlFor="position" className="input-label">
-                      Tare
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                  <div className="input-container">
-                    <input placeholder="Gross weight" className="input-field" type="text" value={container.gross_weight}
-                      onChange={(ev) => setContainer({ ...container, gross_weight: ev.target.value })}
-                    />
-                    <label htmlFor="gross_weight" className="input-label">
-                      Gross weight
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
-
-                  <div className="input-container">
-                    <input placeholder="Weight in cum" className="input-field" type="text" value={container.weight_cum}
-                      onChange={(ev) => setContainer({ ...container, weight_cum: ev.target.value })}
-                    />
-                    <label htmlFor="weight_cum" className="input-label">
-                      Weight in cum
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
-
-                  <div className="input-container">
-                    <input placeholder="weight departure" className="input-field" type="text" value={container.weight_dep}
-                      onChange={(ev) => setContainer({ ...container, weight_dep: ev.target.value })}
-                    />
-                    <label htmlFor="weight_dep" className="input-label">
-                      weight departure
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                </div>
-
-                <div className="align">
-                  <div className="input-container">
                     <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
                       placeholder="Date in"
                     />
@@ -576,34 +580,13 @@
                     </label>
                     <span className="input-highlight"></span>
                   </div>
-                  <div className="input-container">
-                    <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
-                      placeholder="Date in"
-                    />
-                    <label htmlFor="date_in" className="input-label">
-                      Date in
-                    </label>
-                    <span className="input-highlight"></span>
                   </div>
 
-                  <div className="input-container">
-                    <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
-                        setContainer({ ...container, date_out: ev.target.value })
-                      }
-                      placeholder="Date out"
-                    />
-                    <label htmlFor="date_out" className="input-label">
-                      Date out
-                    </label>
-                    <span className="input-highlight"></span>
+                  <div className="align">
                   </div>
-                </div>
-
-                <div className="align">
-                  </div>
-                <button className="btn">Save</button>
-              </form>
-              )}
+                            <button className="btn">Save</button>
+                          </form>
+                        )}
             </div>
           </div>
           <div className="card card_width">
@@ -611,13 +594,18 @@
               <input className="input" placeholder="Type your text" required="" type="text"/>
               <span className="input-border"></span>
             </div>
-            <DataTable columns={columnsToDisplay} data={filteredContainer} customStyles={customStyles} />
+            <DataTable
+                columns={columnsToDisplay}
+                data={filteredContainer}
+                customStyles={customStyles}
+              />
+              {console.log('id in form' + id_get)}
           </div>
           <div className="card card_width">
-            <button className="button_pers" onClick={() => {
+            <button onClick={() => {
                   setModalOpen(true); // Set the id of the clicked row
                 }}>Add new client</button>
-            <button className="button_pers top">Add new transport</button>
+            <button>Add new transport</button>
           </div>
         </div>
       </>

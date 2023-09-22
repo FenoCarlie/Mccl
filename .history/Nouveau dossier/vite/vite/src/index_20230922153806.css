@@ -142,6 +142,7 @@ table > tbody > tr > td {
     border-bottom: 2px solid #ccc;
     outline: none;
     background-color: transparent;
+    text-transform: uppercase;
   }
   
   /* Input label */
@@ -181,9 +182,9 @@ table > tbody > tr > td {
 .input-error-message {
   position: absolute; /* Ajustez cette valeur pour régler la distance entre le champ et le message */
   left: 0;
-  font-size: 12.5px;
+  font-size: 14px;
   color: red;
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
 }
 
 /* Login/Signup forms*/
@@ -719,20 +720,14 @@ table > tbody > tr > td {
  }
 
  .button_pers {
-  background-color: transparent;
   border: none;
-  font-family: 'Open Sans';
-  font-size: 15px;
+  background-color: transparent;
 }
 
 .button_pers:hover {
   background-color: #64636311;
   height: 25px;
   border-radius: 15px;
-}
-
-.top{
-  margin-top: 15px;
 }
 
 .Type {

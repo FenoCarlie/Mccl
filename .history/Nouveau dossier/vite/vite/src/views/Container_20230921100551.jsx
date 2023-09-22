@@ -118,8 +118,8 @@ export default function Container() {
           <h1>Container</h1>
           
           <div className="action">
-              <label className="search-box">
-                <button className="btn-search"><img className="info_icon" src={iconsImgs.loupe} alt=""/></button>
+              <label class="search-box">
+                <button class="btn-search"><img className="info_icon" src={iconsImgs.loupe} alt=""/></button>
                 <input type="text" className="input-search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Type to Search..."/>
               </label>
               <Link className="btn-add" to="/container/new">

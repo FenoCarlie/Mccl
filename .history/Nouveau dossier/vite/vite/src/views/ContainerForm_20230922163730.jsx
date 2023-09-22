@@ -614,10 +614,10 @@
             <DataTable columns={columnsToDisplay} data={filteredContainer} customStyles={customStyles} />
           </div>
           <div className="card card_width">
-            <button className="button_pers" onClick={() => {
+            <button onClick={() => {
                   setModalOpen(true); // Set the id of the clicked row
                 }}>Add new client</button>
-            <button className="button_pers top">Add new transport</button>
+            <button>Add new transport</button>
           </div>
         </div>
       </>

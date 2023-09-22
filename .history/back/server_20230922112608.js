@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/transport", (req, res) => {
-  const sql = "SELECT * FROM transport WHERE company <> 'Madarail';";
+  const sql = "SELECT * FROM transport;";
   db.query(sql, (err, data) => {
       if (err) {
           console.error("Error retrieving data: " + err.message);

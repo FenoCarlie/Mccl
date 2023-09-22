@@ -456,18 +456,6 @@
                     <label htmlFor="status" className="input-label"> Status </label>
                     <span className="input-highlight"></span>
                   </div>
-                  <div className="input-container">
-                    <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
-                      <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
-                      {optionsTp.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
-                    <span className="input-highlight"></span>
-                  </div>
                 </div>
 
                 {selectedTransport === 'Truck' && (
@@ -514,48 +502,83 @@
                   </div>
                 )}
 
-                <div className="align">
-                  <div className="input-container">
-                    <input placeholder="Tare" className="input-field" type="text" value={container.tare}
-                      onChange={(ev) => setContainer({ ...container, tare: ev.target.value })} />
-                    <label htmlFor="position" className="input-label">
-                      Tare
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                  <div className="input-container">
-                    <input placeholder="Gross weight" className="input-field" type="text" value={container.gross_weight}
-                      onChange={(ev) => setContainer({ ...container, gross_weight: ev.target.value })}
-                    />
-                    <label htmlFor="gross_weight" className="input-label">
-                      Gross weight
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
+                    <div className="input-container">
+                          <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
+                            <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
+                            {optionsTp.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
+                        <span className="input-highlight"></span>
+                      </div>
 
-                  <div className="input-container">
-                    <input placeholder="Weight in cum" className="input-field" type="text" value={container.weight_cum}
-                      onChange={(ev) => setContainer({ ...container, weight_cum: ev.target.value })}
-                    />
-                    <label htmlFor="weight_cum" className="input-label">
-                      Weight in cum
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
+                    <div className="align">
+                    <div className="input-container">
+                  <input placeholder="Tare" className="input-field" type="text" value={container.tare}
+                    onChange={(ev) => setContainer({ ...container, tare: ev.target.value })}
+                  />
+                      <label htmlFor="position" className="input-label">
+                        Tare
+                      </label>
+                      <span className="input-highlight"></span>
+                      </div>
+                        <div className="input-container">
+                      <input placeholder="Gross weight" className="input-field" type="text" value={container.gross_weight}
+                        onChange={(ev) => setContainer({ ...container, gross_weight: ev.target.value })}
+                      />
+                      <label htmlFor="gross_weight" className="input-label">
+                        Gross weight
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
 
-                  <div className="input-container">
-                    <input placeholder="weight departure" className="input-field" type="text" value={container.weight_dep}
-                      onChange={(ev) => setContainer({ ...container, weight_dep: ev.target.value })}
-                    />
-                    <label htmlFor="weight_dep" className="input-label">
-                      weight departure
-                    </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                </div>
+                    <div className="input-container">
+                      <input placeholder="Weight in cum" className="input-field" type="text" value={container.weight_cum}
+                        onChange={(ev) => setContainer({ ...container, weight_cum: ev.target.value })}
+                      />
+                      <label htmlFor="weight_cum" className="input-label">
+                        Weight in cum
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
 
-                <div className="align">
-                  <div className="input-container">
+                    <div className="input-container">
+                      <input placeholder="weight departure" className="input-field" type="text" value={container.weight_dep}
+                        onChange={(ev) => setContainer({ ...container, weight_dep: ev.target.value })}
+                      />
+                      <label htmlFor="weight_dep" className="input-label">
+                        weight departure
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                        </div>
+
+                  <div className="align">
+                    <div className="input-container">
+                      <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
+                        placeholder="Date in"
+                      />
+                      <label htmlFor="date_in" className="input-label">
+                        Date in
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+
+                    <div className="input-container">
+                      <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
+                          setContainer({ ...container, date_out: ev.target.value })
+                        }
+                        placeholder="Date out"
+                      />
+                      <label htmlFor="date_out" className="input-label">
+                        Date out
+                      </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                    <div className="input-container">
                     <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
                       placeholder="Date in"
                     />
@@ -576,34 +599,13 @@
                     </label>
                     <span className="input-highlight"></span>
                   </div>
-                  <div className="input-container">
-                    <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
-                      placeholder="Date in"
-                    />
-                    <label htmlFor="date_in" className="input-label">
-                      Date in
-                    </label>
-                    <span className="input-highlight"></span>
                   </div>
 
-                  <div className="input-container">
-                    <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
-                        setContainer({ ...container, date_out: ev.target.value })
-                      }
-                      placeholder="Date out"
-                    />
-                    <label htmlFor="date_out" className="input-label">
-                      Date out
-                    </label>
-                    <span className="input-highlight"></span>
+                  <div className="align">
                   </div>
-                </div>
-
-                <div className="align">
-                  </div>
-                <button className="btn">Save</button>
-              </form>
-              )}
+                            <button className="btn">Save</button>
+                          </form>
+                        )}
             </div>
           </div>
           <div className="card card_width">
@@ -611,13 +613,18 @@
               <input className="input" placeholder="Type your text" required="" type="text"/>
               <span className="input-border"></span>
             </div>
-            <DataTable columns={columnsToDisplay} data={filteredContainer} customStyles={customStyles} />
+            <DataTable
+                columns={columnsToDisplay}
+                data={filteredContainer}
+                customStyles={customStyles}
+              />
+              {console.log('id in form' + id_get)}
           </div>
           <div className="card card_width">
-            <button className="button_pers" onClick={() => {
+            <button onClick={() => {
                   setModalOpen(true); // Set the id of the clicked row
                 }}>Add new client</button>
-            <button className="button_pers top">Add new transport</button>
+            <button>Add new transport</button>
           </div>
         </div>
       </>
