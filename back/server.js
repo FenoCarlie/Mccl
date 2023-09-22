@@ -25,7 +25,7 @@ db.connect((err) => {
 });
 
 app.get("/", (req, res) => {
-    const sql = "SELECT * FROM container";
+    const sql = "SELECT * FROM container WHERE in_progress = TRUE OR add_date = (SELECT MAX(add_date) FROM container);";
     db.query(sql, (err, data) => {
         if (err) {
             console.error("Error retrieving data: " + err.message);
@@ -35,16 +35,36 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/transport", (req, res) => {
+  const sql = "SELECT * FROM transport;";
+  db.query(sql, (err, data) => {
+      if (err) {
+          console.error("Error retrieving data: " + err.message);
+          return res.status(500).json({ error: "Error retrieving data" }); // Return an error response
+      }
+      return res.json(data);
+  });
+});
+
 app.post('/create', (req, res) => {
     const {
       num_container,
       type,
       category,
       status,
-      live,
-      code_location_tp,
+      line,
+      date_in,
+      date_out,
+      id_cli,
       tp_name,
+      code_location_tp,
       position,
+      add_by,
+      edit_by,
+      add_date,
+      edit_date,
+      forwarding_agent,
+      booking_number,
       date_departure,
       date_arrived,
       tare,
@@ -58,14 +78,22 @@ app.post('/create', (req, res) => {
     const sql = `
         INSERT INTO container (
           num_container,
-          name_container,
           type,
           category,
           status,
-          live,
-          code_location_tp,
+          line,
+          date_in,
+          date_out,
+          id_cli,
           tp_name,
+          code_location_tp,
           position,
+          add_by,
+          edit_by,
+          add_date,
+          edit_date,
+          forwarding_agent,
+          booking_number,
           date_departure,
           date_arrived,
           tare,
@@ -74,7 +102,7 @@ app.post('/create', (req, res) => {
           weight_dep,
           transit_time,
           shipment
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
     `;
 
     const values = [
@@ -82,10 +110,19 @@ app.post('/create', (req, res) => {
       type,
       category,
       status,
-      live,
-      code_location_tp,
+      line,
+      date_in,
+      date_out,
+      id_cli,
       tp_name,
+      code_location_tp,
       position,
+      add_by,
+      edit_by,
+      add_date,
+      edit_date,
+      forwarding_agent,
+      booking_number,
       date_departure,
       date_arrived,
       tare,
