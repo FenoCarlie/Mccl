@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/transport", (req, res) => {
-  const sql = "SELECT * FROM transport;";
+  const sql = "SELECT * FROM transport WHERE company <> 'Madarail';";
   db.query(sql, (err, data) => {
       if (err) {
           console.error("Error retrieving data: " + err.message);
@@ -59,48 +59,68 @@ app.post('/create', (req, res) => {
       status,
       num_truck,
       num_wagon,
-      num_platform,
       tare,
       gross_weight,
       date_in,
+      date_out
     } = req.body;
 
     const sql = `
-    INSERT INTO container (
-      num_container,
-      line,
-      shipment,
-      booking,
-      type,
-      id_transport,
-      id_tp,
-      category,
-      status,
-      num_truck,
-      num_wagon,
-      num_platform,
-      tare,
-      gross_weight,
-      date_in
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`;
+        INSERT INTO container (
+          num_container,
+          type,
+          category,
+          status,
+          line,
+          date_in,
+          date_out,
+          id_cli,
+          tp_name,
+          code_location_tp,
+          position,
+          add_by,
+          edit_by,
+          add_date,
+          edit_date,
+          forwarding_agent,
+          booking_number,
+          date_departure,
+          date_arrived,
+          tare,
+          gross_weight,
+          weight_cum,
+          weight_dep,
+          transit_time,
+          shipment
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+    `;
 
     const values = [
       num_container,
-      line,
-      shipment,
-      booking,
       type,
-      id_transport,
-      id_tp,
       category,
       status,
-      num_truck,
-      num_wagon,
-      num_platform,
+      line,
+      date_in,
+      date_out,
+      id_cli,
+      tp_name,
+      code_location_tp,
+      position,
+      add_by,
+      edit_by,
+      add_date,
+      edit_date,
+      forwarding_agent,
+      booking_number,
+      date_departure,
+      date_arrived,
       tare,
       gross_weight,
-      date_in
+      weight_cum,
+      weight_dep,
+      transit_time,
+      shipment
     ];
 
     db.query(sql, values, (err, result) => {
@@ -116,6 +136,18 @@ app.post('/create', (req, res) => {
 app.delete('/delete/:id_container', (req, res) => {
     const containerId = req.params.id_container;
     // Assuming you are using a database, you can use a query to delete the container with the specified ID
+    db.query('DELETE FROM container WHERE id_container = ?', [containerId], (error, results) => {
+      if (error) {
+        console.error(error);
+        res.sendStatus(500); // Send an error status code back to the client
+      } else {
+        res.sendStatus(200); // Send a success status code back to the client
+      }
+    });
+  });
+
+  app.delete('/delete/:id_container', (req, res) => {
+    const containerId = req.params.id_container;
     db.query('DELETE FROM container WHERE id_container = ?', [containerId], (error, results) => {
       if (error) {
         console.error(error);

@@ -55,9 +55,7 @@ function InfoContainer({ selectedId, setOpenModal }) {
     axios
       .delete(`http://localhost:8081/delete/${id_container}`)
       .then((response) => {
-        setLoading(true);
         setOpenModal(false);
-        setLoading(false);
         console.log(response.data);
 
       })

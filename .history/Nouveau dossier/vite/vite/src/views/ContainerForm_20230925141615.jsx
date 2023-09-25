@@ -86,7 +86,7 @@
     ];
 
     const columnsToDisplay = columns.filter(
-      (column) => column.selector !== 'id_container' && column.selector !== 'line' && column.selector !== 'type' && column.selector !== 'tare');
+      (column) => column.selector !== 'line' && column.selector !== 'type' && column.selector !== 'tare');
 
     const getContainer = () => {
       setLoading(true);

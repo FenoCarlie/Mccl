@@ -8,30 +8,51 @@
     const navigate = useNavigate();
     let { id_container } = useParams();
     const [filteredContainer, setFilteredContainer] = useState([]);
+    const [id_get, setSelectedId] = useState(null);
+    const [selectedRow, setSelectedRow] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedTransport, setSelectedTransport] = useState('');
     const [container, setContainer] = useState({
+      id_container: null,
       num_container: "",
-      line:"",
-      shipment:"",
-      booking:"",
-      type:"",
-      id_transport:"",
-      id_tp:"",
-      id_client:"",
-      category:"",
-      status:"",
-      num_truck:"",
-      num_wagon:"",
-      num_platform:"",
-      tare:"",
-      gross_weight:"",
-      date_in:"",
+      name_container: "",
+      type: "",
+      category: "",
+      status: "",
+      live: "",
+      code_location_tp: "",
+      tp_name: "",
+      position: "",
+      date_departure: "",
+      date_arrived: "",
+      tare: "",
+      gross_weight: "",
+      weight_cum: "",
+      weight_dep: "",
+      transit_time: "",
+      shipment: "",
+      date_in: '',
+      date_out: ''
     });
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
+
+    useEffect(() => {
+      if (id_container) {
+        setLoading(true);
+        axios.get(`http://localhost:8081/container/${id_container}`)
+          .then(({ data }) => {
+            setLoading(false);
+            setContainer(data[0]);
+            console.log(data);
+          })
+          .catch(() => {
+            setLoading(false);
+          });
+      }
+    }, [id_container]);
     
 
     const customStyles = {
@@ -54,39 +75,30 @@
       },
     };
 
-    const selectContainer = (selectedRow) => {
-      setContainer({
-        id_container: selectedRow.id_container,
-        num_container: selectedRow.num_container,
-        type: selectedRow.type,
-        line: selectedRow.line,
-      });
-      setType(selectedRow.type);
-      setLine(selectedRow.line);
-    };
+    const putContainerUsed = (row) => {
+      setSelectedRow(row);
+    }
     
     const columns = [
       { name: "Id_container", selector: "id_container"},
       { name: "Number of container", selector: "num_container" },
-      { name: "line", selector: "line" },
-      { name: "type", selector: "type" },
-      { name: "tare", selector: "tare" },
       {
         cell: (row) => (
           <div>
             <button
                 className="button_pers"
-                onClick={() => selectContainer(row)}
+                onClick={() => putContainerUsed(row)}
               >
-                Select
+                Selected
             </button>
           </div>
         ),
       }
     ];
 
-    const columnsToDisplay = columns.filter(
-      (column) => column.selector !== 'id_container' && column.selector !== 'line' && column.selector !== 'type' && column.selector !== 'tare');
+
+
+    const columnsToDisplay = columns.filter((column) => column.selector !== 'id_container');
 
     const getContainer = () => {
       setLoading(true);
@@ -108,23 +120,73 @@
     }, []);
 
     useEffect(() => {
-      console.log(container);
+      if (id_container) {
+        setLoading(true);
+        axios.get(`http://localhost:8081/container/${id_container}`)
+          .then(({ data }) => {
+            setLoading(false);
+            setContainer(data);
+          })
+          .catch(() => {
+            setLoading(false);
+          });
+      } else {
+        setContainer({
+          id_container: null,
+          num_container: "",
+          name_container: "",
+          type: "",
+          category: "",
+          status: "",
+          live: "",
+          id_tp: "",
+          position: "",
+          date_departure: "",
+          date_arrived: "",
+          tare: "",
+          gross_weight: "",
+          weight_cum: "",
+          weight_dep: "",
+          shipment: "",
+          date_in: '',
+          date_out: ''
+        });
+      }
+    }, [id_container]);
+
+    useEffect(() => {
+      console.log(container); // Log the updated container value here
     }, [container]);
 
-    const onSubmit = (ev) => {
+    const onSubmit = ev => {
       ev.preventDefault();
-      axios
-        .post('http://localhost:8081/create', container)
-        .then(() => {
-          setNotification('Container was successfully created');
-          navigate('/container');
-          setErrors({}); // Réinitialiser les erreurs en cas de succès
-        })
-        .catch((err) => {
-          if (err.response && err.response.status === 422) {
-            setErrors(err.response.data.errors);
-          }
-        });
+      if (container.id_container) {
+        axios
+          .post('http://localhost:8081/create', container)
+          .then(() => {
+            setNotification('Container was successfully created');
+            navigate('/container');
+          })
+          .catch(err => {
+            const response = err.response;
+            if (response && response.status === 422) {
+              setErrors(response.data.errors);
+            }
+          });
+      } else {
+        axios
+          .post('http://localhost:8081/create', container)
+          .then(() => {
+            setNotification('Container was successfully created');
+            navigate('/container');
+          })
+          .catch(err => {
+            const response = err.response;
+            if (response && response.status === 422) {
+              setErrors(response.data.errors);
+            }
+          });
+      }
     };
 
     const [type, setType] = useState('')
@@ -258,7 +320,8 @@
       setSelectedTransport(ev.target.value);
       setTypeTransport(ev.target.value);
     };
-    
+
+    const [numContainer, setNumContainer] = useState(selectedRow ? selectedRow.num_container : "");
     const [numContainerError, setNumContainerError] = useState("");
 
     const handleNumContainerChange = (ev) => {
@@ -267,6 +330,8 @@
       if (inputValue.length > 11) {
         inputValue = inputValue.slice(0, 11);
       }
+    
+      setNumContainer(inputValue);
       
       if (inputValue.length !== 11) {
         setNumContainerError("Must be 11 characters long.");
@@ -281,7 +346,7 @@
 
     return (
       <>
-        <h1>New Container</h1>
+        <h1>{container.id_container ? `Update container: ${container.num_container}` : 'New Container'}</h1>
         <div className="align">
           <div className="card card_width animated fadeInDown">
             <div className="test">
@@ -290,7 +355,7 @@
                     Loading...
                   </div>
                 )}
-                {Object.keys(errors).length > 0 && (
+                {errors && (
                   <div className="alert">
                     {Object.keys(errors).map(key => (
                       <p key={key}>{errors[key][0]}</p>
@@ -306,10 +371,9 @@
                     placeholder="Number of container"
                     className="input-field"
                     type="text"
-                    value={container.num_container}
+                    value={numContainer}
                     onChange={handleNumContainerChange}
-                    id="num_container"
-                    maxLength="11"
+                    id="num_container" // Ajoutez un id unique
                   />
                   <label htmlFor="num_container" className="input-label">
                     Number of container
@@ -320,36 +384,18 @@
                   </div>
 
                   <div className="input-container">
-                  <select
-                    className="input-field"
-                    value={line} // Utilisez la valeur de 'line' ici
-                    onChange={handleSelectLine}
-                    id="line" // Ajoutez un id unique
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Line
-                    </option>
-                    {optionsLine.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="line" className="input-label">
-                    Line
-                  </label>
+                    <select className="input-field" value={line} onChange={handleSelectLine} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Line </option>
+                      {optionsLine.map((option) => (
+                        <option key={option.value} value={option.value}> {option.label} </option>
+                      ))}
+                    </select>
+                    <label htmlFor="line" className="input-label"> Line </label>
                     <span className="input-highlight"></span>
                   </div>
                   
                   <div className="input-container">
-                  <input
-                      placeholder="Shipment"
-                      className="input-field"
-                      type="text"
-                      value={container.shipment}
-                      onChange={(ev) => setContainer({ ...container, shipment: ev.target.value })}
-                      id="shipment" // Ajoutez un id unique
-                    />
+                    <input placeholder="Shipment" className="input-field" type="text" value={container.shipment} onChange={(ev) => setContainer({ ...container, shipment: ev.target.value })} />
                     <label htmlFor="shipment" className="input-label">
                       Shipment
                     </label>
@@ -357,17 +403,11 @@
                   </div>
 
                   <div className="input-container">
-                  <input
-                      placeholder="Booking"
-                      className="input-field"
-                      type="text"
-                      value={container.booking}
-                      onChange={(ev) => {
+                    <input placeholder="Booking" className="input-field" type="text" value={container.booking} onChange={(ev) => {
                         const newValue = ev.target.value.slice(0, 9);
                         setContainer({ ...container, booking: newValue });
                       }}
                       maxLength="9"
-                      id="booking" // Ajoutez un id unique
                     />
                     <label htmlFor="booking" className="input-label">
                       Booking
@@ -378,224 +418,198 @@
 
                 <div className="align">
                   <div className="input-container">
-                  <select
-                    className="input-field"
-                    value={type}
-                    onChange={handleSelectType}
-                    id="type"
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Type
-                    </option>
-                    {optionsType.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                    <label htmlFor="type" className="input-label">
-                      Type
-                    </label>
+                    <select className="input-field" value={type} onChange={handleSelectType} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Type </option>
+                      {optionsType.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <label htmlFor="type" className="input-label"> Type </label>
                     <span className="input-highlight"></span>
                   </div>
 
                   <div className="input-container">
-                  <select
-                      className="input-field"
-                      value={typeTransport}
-                      onChange={handleSelectTypeTransport}
-                      id="transport" // Ajoutez un id unique
-                    >
-                      <option value="" disabled hidden style={{ color: 'gray' }}>
-                        Transport
-                      </option>
+                    <select className="input-field" value={typeTransport} onChange={handleSelectTypeTransport} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Transport </option>
                       {optionsTypeTransport.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
                       ))}
                     </select>
-                    <label htmlFor="transport" className="input-label">
-                      Transport
-                    </label>
+                    <label htmlFor="type" className="input-label"> Transport </label>
                     <span className="input-highlight"></span>
                   </div>
 
                   <div className="input-container">
-                  <select
-                      className="input-field"
-                      value={category}
-                      onChange={handleSelectCategory}
-                      id="category" // Ajoutez un id unique
-                    >
-                      <option value="" disabled hidden style={{ color: 'gray' }}>
-                        Category
-                      </option>
+                    <select className="input-field" value={category} onChange={handleSelectCategory} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Category </option>
                       {optionsCategory.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
                       ))}
                     </select>
-                    <label htmlFor="category" className="input-label">
-                      Category
-                    </label>
+                    <label htmlFor="category" className="input-label"> Category </label>
                     <span className="input-highlight"></span>
                   </div>
 
                   <div className="input-container">
-                  <select
-                    className="input-field"
-                    value={status}
-                    onChange={handleSelectStatus}
-                    id="status" // Ajoutez un id unique
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Status
-                    </option>
-                    {optionsStatus.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="status" className="input-label">
-                    Status
-                  </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                  <div className="input-container">
-                  <select
-                    className="input-field"
-                    value={id_tp}
-                    onChange={handleSelectTp}
-                    id="id_tp" // Ajoutez un id unique
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Code location T.P
-                    </option>
-                    {optionsTp.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="id_tp" className="input-label">
-                    Code location T.P
-                  </label>
-                    <span className="input-highlight"></span>
-                  </div>
-                </div>
-
-                <div className="align">
-                <div className="input-container">
-                  <select
-                    className="input-field"
-                    value={id_transport}
-                    onChange={handleSelectTransport}
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Transport company
-                    </option>
-                    {optionsTransport.map((option) => (
-                      (selectedTransport === 'Truck' && option.label !== 'Madarail') ||
-                      (selectedTransport === 'Rail' && option.label === 'Madarail') ? (
+                    <select className="input-field" value={status} onChange={handleSelectStatus} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Status </option>
+                      {optionsStatus.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
-                      ) : null
-                    ))}
-                  </select>
-                  <label htmlFor="transport" className="input-label">
-                    Transport
-                  </label>
-                  <span className="input-highlight"></span>
+                      ))}
+                    </select>
+                    <label htmlFor="status" className="input-label"> Status </label>
+                    <span className="input-highlight"></span>
+                  </div>
+                  <div className="input-container">
+                    <select className="input-field" value={id_tp} onChange={handleSelectTp} > 
+                      <option value="" disabled hidden style={{ color: 'gray' }} > Code location T.P </option>
+                      {optionsTp.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <label htmlFor="id_tp" className="input-label"> Code location T.P </label>
+                    <span className="input-highlight"></span>
+                  </div>
                 </div>
 
                 {selectedTransport === 'Truck' && (
-                  <>
+                  <div className="align">
                     <div className="input-container">
-                      <input
-                        placeholder="Truck Number"
-                        className="input-field"
-                        type="text"
-                        value={container.num_truck}
-                        onChange={(ev) => setContainer({ ...container, num_truck: ev.target.value })}
-                        id="num_truck"
-                      />
-                      <label htmlFor="num_truck" className="input-label">
-                        Truck Number
-                      </label>
+                      <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
+                        <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
+                        {optionsTransport.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="transport" className="input-label"> Transport </label>
                       <span className="input-highlight"></span>
                     </div>
-                  </>
+                    <div className="input-container">
+                      <input placeholder="N° Truck" className="input-field" type="text" value={container.num_truck} onChange={(ev) => setContainer({ ...container, num_truck: ev.target.value })} />
+                      <label htmlFor="num_truck" className="input-label"> N° Truck </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                  </div>
                 )}
 
                 {selectedTransport === 'Rail' && (
-                  <>
+                  <div className="align">
                     <div className="input-container">
-                      <input
-                        placeholder="Wagon Number"
-                        className="input-field"
-                        type="text"
-                        value={container.num_wagon}
-                        onChange={(ev) => setContainer({ ...container, num_wagon: ev.target.value })}
-                        id="num_wagon"
-                      />
-                      <label htmlFor="num_wagon" className="input-label">
-                        Wagon Number
-                      </label>
+                      <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
+                        <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
+                        {optionsTransport.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="transport" className="input-label"> Transport </label>
                       <span className="input-highlight"></span>
                     </div>
-                  </>
+                    <div className="input-container">
+                      <input placeholder="N° wagon" className="input-field" type="text" value={container.num_wagon} onChange={(ev) => setContainer({ ...container, num_wagon: ev.target.value })} />
+                      <label htmlFor="num_wagon" className="input-label"> N° Wagon </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                  </div>
                 )}
-                <div className="input-container">
-                  <input
-                      placeholder="Tare"
-                      className="input-field"
-                      type="text"
-                      value={container.tare}
-                      onChange={(ev) => setContainer({ ...container, tare: ev.target.value })}
-                      id="tare" // Ajoutez un id unique
-                    />
-                    <label htmlFor="tare" className="input-label">
+
+                <div className="align">
+                  <div className="input-container">
+                    <input placeholder="Tare" className="input-field" type="text" value={container.tare}
+                      onChange={(ev) => setContainer({ ...container, tare: ev.target.value })} />
+                    <label htmlFor="position" className="input-label">
                       Tare
                     </label>
                     <span className="input-highlight"></span>
                   </div>
                   <div className="input-container">
-                    <input
-                      placeholder="Gross Weight"
-                      className="input-field"
-                      type="text"
-                      value={container.gross_weight}
+                    <input placeholder="Gross weight" className="input-field" type="text" value={container.gross_weight}
                       onChange={(ev) => setContainer({ ...container, gross_weight: ev.target.value })}
-                      id="gross_weight" // Ajoutez un id unique
                     />
                     <label htmlFor="gross_weight" className="input-label">
-                      Gross Weight
+                      Gross weight
+                    </label>
+                    <span className="input-highlight"></span>
+                  </div>
+
+                  <div className="input-container">
+                    <input placeholder="Weight in cum" className="input-field" type="text" value={container.weight_cum}
+                      onChange={(ev) => setContainer({ ...container, weight_cum: ev.target.value })}
+                    />
+                    <label htmlFor="weight_cum" className="input-label">
+                      Weight in cum
+                    </label>
+                    <span className="input-highlight"></span>
+                  </div>
+
+                  <div className="input-container">
+                    <input placeholder="weight departure" className="input-field" type="text" value={container.weight_dep}
+                      onChange={(ev) => setContainer({ ...container, weight_dep: ev.target.value })}
+                    />
+                    <label htmlFor="weight_dep" className="input-label">
+                      weight departure
                     </label>
                     <span className="input-highlight"></span>
                   </div>
                 </div>
 
                 <div className="align">
-                </div>
-                
                   <div className="input-container">
-                  <input
-                    className="input-field"
-                    type="date"
-                    value={container.date_in}
-                    onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
-                    placeholder="Date In"
-                    id="date_in" // Ajoutez un id unique
-                  />
-                  <label htmlFor="date_in" className="input-label">
-                    Date In
-                  </label>
+                    <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
+                      placeholder="Date in"
+                    />
+                    <label htmlFor="date_in" className="input-label">
+                      Date in
+                    </label>
                     <span className="input-highlight"></span>
                   </div>
+
+                  <div className="input-container">
+                    <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
+                        setContainer({ ...container, date_out: ev.target.value })
+                      }
+                      placeholder="Date out"
+                    />
+                    <label htmlFor="date_out" className="input-label">
+                      Date out
+                    </label>
+                    <span className="input-highlight"></span>
+                  </div>
+                  <div className="input-container">
+                    <input className="input-field" type="date" value={container.date_in} onChange={(ev) => setContainer({ ...container, date_in: ev.target.value })}
+                      placeholder="Date in"
+                    />
+                    <label htmlFor="date_in" className="input-label">
+                      Date in
+                    </label>
+                    <span className="input-highlight"></span>
+                  </div>
+
+                  <div className="input-container">
+                    <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
+                        setContainer({ ...container, date_out: ev.target.value })
+                      }
+                      placeholder="Date out"
+                    />
+                    <label htmlFor="date_out" className="input-label">
+                      Date out
+                    </label>
+                    <span className="input-highlight"></span>
+                  </div>
+                </div>
 
                 <div className="align">
                   </div>

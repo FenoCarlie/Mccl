@@ -70,7 +70,6 @@
       { name: "Number of container", selector: "num_container" },
       { name: "line", selector: "line" },
       { name: "type", selector: "type" },
-      { name: "tare", selector: "tare" },
       {
         cell: (row) => (
           <div>
@@ -85,8 +84,7 @@
       }
     ];
 
-    const columnsToDisplay = columns.filter(
-      (column) => column.selector !== 'id_container' && column.selector !== 'line' && column.selector !== 'type' && column.selector !== 'tare');
+    const columnsToDisplay = columns.filter((column) => column.selector !== 'id_container', 'line', );
 
     const getContainer = () => {
       setLoading(true);
@@ -498,6 +496,7 @@
                       Transport company
                     </option>
                     {optionsTransport.map((option) => (
+                      // Vérifiez le type de transport sélectionné et filtre les options en conséquence
                       (selectedTransport === 'Truck' && option.label !== 'Madarail') ||
                       (selectedTransport === 'Rail' && option.label === 'Madarail') ? (
                         <option key={option.value} value={option.value}>

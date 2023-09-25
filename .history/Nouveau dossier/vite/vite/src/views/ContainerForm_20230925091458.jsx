@@ -18,18 +18,19 @@
       type:"",
       id_transport:"",
       id_tp:"",
-      id_client:"",
       category:"",
       status:"",
       num_truck:"",
       num_wagon:"",
-      num_platform:"",
       tare:"",
       gross_weight:"",
+      weight_cum:"",
+      weight_dep:"",
       date_in:"",
+      date_out:""
     });
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
     
@@ -58,19 +59,12 @@
       setContainer({
         id_container: selectedRow.id_container,
         num_container: selectedRow.num_container,
-        type: selectedRow.type,
-        line: selectedRow.line,
       });
-      setType(selectedRow.type);
-      setLine(selectedRow.line);
     };
     
     const columns = [
       { name: "Id_container", selector: "id_container"},
       { name: "Number of container", selector: "num_container" },
-      { name: "line", selector: "line" },
-      { name: "type", selector: "type" },
-      { name: "tare", selector: "tare" },
       {
         cell: (row) => (
           <div>
@@ -85,8 +79,7 @@
       }
     ];
 
-    const columnsToDisplay = columns.filter(
-      (column) => column.selector !== 'id_container' && column.selector !== 'line' && column.selector !== 'type' && column.selector !== 'tare');
+    const columnsToDisplay = columns.filter((column) => column.selector !== 'id_container');
 
     const getContainer = () => {
       setLoading(true);
@@ -111,20 +104,20 @@
       console.log(container);
     }, [container]);
 
-    const onSubmit = (ev) => {
+    const onSubmit = ev => {
       ev.preventDefault();
       axios
-        .post('http://localhost:8081/create', container)
-        .then(() => {
-          setNotification('Container was successfully created');
-          navigate('/container');
-          setErrors({}); // Réinitialiser les erreurs en cas de succès
-        })
-        .catch((err) => {
-          if (err.response && err.response.status === 422) {
-            setErrors(err.response.data.errors);
-          }
-        });
+          .post('http://localhost:8081/create', container)
+          .then(() => {
+            setNotification('Container was successfully created');
+            navigate('/container');
+          })
+          .catch(err => {
+            const response = err.response;
+            if (response && response.status === 422) {
+              setErrors(response.data.errors);
+            }
+          });
     };
 
     const [type, setType] = useState('')
@@ -290,7 +283,7 @@
                     Loading...
                   </div>
                 )}
-                {Object.keys(errors).length > 0 && (
+                {errors && (
                   <div className="alert">
                     {Object.keys(errors).map(key => (
                       <p key={key}>{errors[key][0]}</p>
@@ -309,7 +302,6 @@
                     value={container.num_container}
                     onChange={handleNumContainerChange}
                     id="num_container"
-                    maxLength="11"
                   />
                   <label htmlFor="num_container" className="input-label">
                     Number of container
@@ -322,9 +314,9 @@
                   <div className="input-container">
                   <select
                     className="input-field"
-                    value={line} // Utilisez la valeur de 'line' ici
+                    value={line}
                     onChange={handleSelectLine}
-                    id="line" // Ajoutez un id unique
+                    id="line"
                   >
                     <option value="" disabled hidden style={{ color: 'gray' }}>
                       Line
@@ -379,20 +371,20 @@
                 <div className="align">
                   <div className="input-container">
                   <select
-                    className="input-field"
-                    value={type}
-                    onChange={handleSelectType}
-                    id="type"
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Type
-                    </option>
-                    {optionsType.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
+                      className="input-field"
+                      value={type}
+                      onChange={handleSelectType}
+                      id="type" // Ajoutez un id unique
+                    >
+                      <option value="" disabled hidden style={{ color: 'gray' }}>
+                        Type
                       </option>
-                    ))}
-                  </select>
+                      {optionsType.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                     <label htmlFor="type" className="input-label">
                       Type
                     </label>
@@ -487,69 +479,70 @@
                   </div>
                 </div>
 
-                <div className="align">
-                <div className="input-container">
-                  <select
-                    className="input-field"
-                    value={id_transport}
-                    onChange={handleSelectTransport}
-                  >
-                    <option value="" disabled hidden style={{ color: 'gray' }}>
-                      Transport company
-                    </option>
-                    {optionsTransport.map((option) => (
-                      (selectedTransport === 'Truck' && option.label !== 'Madarail') ||
-                      (selectedTransport === 'Rail' && option.label === 'Madarail') ? (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ) : null
-                    ))}
-                  </select>
-                  <label htmlFor="transport" className="input-label">
-                    Transport
-                  </label>
-                  <span className="input-highlight"></span>
-                </div>
-
                 {selectedTransport === 'Truck' && (
-                  <>
+                  <div className="align">
                     <div className="input-container">
-                      <input
-                        placeholder="Truck Number"
-                        className="input-field"
-                        type="text"
-                        value={container.num_truck}
-                        onChange={(ev) => setContainer({ ...container, num_truck: ev.target.value })}
-                        id="num_truck"
-                      />
-                      <label htmlFor="num_truck" className="input-label">
-                        Truck Number
-                      </label>
+                      <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
+                        <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
+                        {optionsTransport.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="transport" className="input-label"> Transport </label>
                       <span className="input-highlight"></span>
                     </div>
-                  </>
+                    <div className="input-container">
+                    <input
+                      placeholder="Truck Number"
+                      className="input-field"
+                      type="text"
+                      value={container.num_truck}
+                      onChange={(ev) => setContainer({ ...container, num_truck: ev.target.value })}
+                      id="num_truck" // Ajoutez un id unique
+                    />
+                    <label htmlFor="num_truck" className="input-label">
+                      Truck Number
+                    </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                  </div>
                 )}
 
                 {selectedTransport === 'Rail' && (
-                  <>
+                  <div className="align">
                     <div className="input-container">
-                      <input
-                        placeholder="Wagon Number"
-                        className="input-field"
-                        type="text"
-                        value={container.num_wagon}
-                        onChange={(ev) => setContainer({ ...container, num_wagon: ev.target.value })}
-                        id="num_wagon"
-                      />
-                      <label htmlFor="num_wagon" className="input-label">
-                        Wagon Number
-                      </label>
+                      <select className="input-field" value={id_transport} onChange={handleSelectTransport} > 
+                        <option value="" disabled hidden style={{ color: 'gray' }} > Transport company </option>
+                        {optionsTransport.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="transport" className="input-label"> Transport </label>
                       <span className="input-highlight"></span>
                     </div>
-                  </>
+                    <div className="input-container">
+                    <input
+                      placeholder="Wagon Number"
+                      className="input-field"
+                      type="text"
+                      value={container.num_wagon}
+                      onChange={(ev) => setContainer({ ...container, num_wagon: ev.target.value })}
+                      id="num_wagon" // Ajoutez un id unique
+                    />
+                    <label htmlFor="num_wagon" className="input-label">
+                      Wagon Number
+                    </label>
+                      <span className="input-highlight"></span>
+                    </div>
+                  </div>
                 )}
-                <div className="input-container">
+
+                <div className="align">
+                  <div className="input-container">
                   <input
                       placeholder="Tare"
                       className="input-field"
@@ -563,6 +556,7 @@
                     </label>
                     <span className="input-highlight"></span>
                   </div>
+
                   <div className="input-container">
                     <input
                       placeholder="Gross Weight"
@@ -577,9 +571,36 @@
                     </label>
                     <span className="input-highlight"></span>
                   </div>
-                </div>
 
-                <div className="align">
+                  <div className="input-container">
+                  <input
+                      placeholder="Weight cum"
+                      className="input-field"
+                      type="text"
+                      value={container.weight_cum}
+                      onChange={(ev) => setContainer({ ...container, weight_cum: ev.target.value })}
+                      id="weight_cum" // Ajoutez un id unique
+                    />
+                    <label htmlFor="weight_cum" className="input-label">
+                      Weight Cum
+                    </label>
+                    <span className="input-highlight"></span>
+                  </div>
+
+                  <div className="input-container">
+                  <input
+                    placeholder="Weight Departure"
+                    className="input-field"
+                    type="text"
+                    value={container.weight_dep}
+                    onChange={(ev) => setContainer({ ...container, weight_dep: ev.target.value })}
+                    id="weight_dep" // Ajoutez un id unique
+                  />
+                  <label htmlFor="weight_dep" className="input-label">
+                    Weight Departure
+                  </label>
+                    <span className="input-highlight"></span>
+                  </div>
                 </div>
                 
                   <div className="input-container">
@@ -594,6 +615,18 @@
                   <label htmlFor="date_in" className="input-label">
                     Date In
                   </label>
+                    <span className="input-highlight"></span>
+                  </div>
+                  
+                  <div className="input-container">
+                    <input className="input-field" type="date" value={container.date_out} onChange={(ev) =>
+                        setContainer({ ...container, date_out: ev.target.value })
+                      }
+                      placeholder="Date out"
+                    />
+                    <label htmlFor="date_out" className="input-label">
+                      Date out
+                    </label>
                     <span className="input-highlight"></span>
                   </div>
 
