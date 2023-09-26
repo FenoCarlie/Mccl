@@ -103,9 +103,7 @@ table > tbody > tr > td {
     margin-top: 0.5rem;
 }
 
- .card_width {
-  width: 800px;
-}
+
 
 .alert {
     padding: 1rem;
@@ -178,6 +176,15 @@ table > tbody > tr > td {
   .input-field:focus + .input-label + .input-highlight {
     width: 100%;
   }
+
+  /* Input error message */
+.input-error-message {
+  position: absolute; /* Ajustez cette valeur pour régler la distance entre le champ et le message */
+  left: 0;
+  font-size: 12.5px;
+  color: red;
+  transition: all 0.3s ease;
+}
 
 /* Login/Signup forms*/
 
@@ -712,12 +719,64 @@ table > tbody > tr > td {
  }
 
  .button_pers {
-  border: none;
   background-color: transparent;
+  border: none;
+  font-family: 'Open Sans';
+  font-size: 15px;
 }
 
 .button_pers:hover {
   background-color: #64636311;
   height: 25px;
   border-radius: 15px;
+}
+
+.top{
+  margin-top: 15px;
+}
+
+.Type {
+  color: #7979798f;
+}
+
+/* Pour les écrans de largeur entre 769 pixels et 1024 pixels (tablettes) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .align {
+    display: flex;
+    flex-direction: column;
+   }
+
+   .card_width {
+    width: 600px;
+  }
+}
+
+/* Styles pour les suggestions */
+.client-suggestions {
+  position: absolute;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1;
+  margin-top: -15px;
+  width: 75%;
+  margin-left: 20px;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.client-suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  left: 15px;
+}
+
+.client-suggestion-item:hover {
+  background-color: #f0f0f0;
 }

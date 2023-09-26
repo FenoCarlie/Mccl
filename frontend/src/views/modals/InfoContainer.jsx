@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Container from './../../../../frontend/src/components/views/Container';
+import { Link } from "react-router-dom";
+import Container from '../Container';
 
-function InfoContainer({ selectedId, setOpenModal }) {
+function InfoContainer({ selectedId, setOpenModal, onUpdateContainerData  }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [container, setContainer] = useState({
     id_container: null,
     num_container: "",
-    name_container: "",
+    line: "",
     type: "",
     category: "",
     status: "",
-    live: "",
-    code_location_tp: "",
+    client:"",
+    location: "",
     tp_name: "",
     position: "",
     date_departure: "",
     date_arrived: "",
     tare: "",
     gross_weight: "",
-    weight_cum: "",
-    weight_dep: "",
-    transit_time: "",
     shipment: ""
   });
   
@@ -55,8 +53,13 @@ function InfoContainer({ selectedId, setOpenModal }) {
     axios
       .delete(`http://localhost:8081/delete/${id_container}`)
       .then((response) => {
-        getContainer();
+        setLoading(true);
+        setOpenModal(false);
+        setLoading(false);
         console.log(response.data);
+
+        // Après la suppression réussie, appelez la fonction onUpdateContainerData
+        onUpdateContainerData();
       })
       .catch((error) => {
         console.error("An error occurred while deleting the container:", error);
@@ -90,13 +93,15 @@ function InfoContainer({ selectedId, setOpenModal }) {
               </li>
               <hr />
               <li>
+              <Link to={'/historic/' + container.num_container}>
                 <button>
                   <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                     <rect ry="2" rx="2" height="13" width="13" y="9" x="9"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <span>New transit</span>
+                  <span>Historic</span>
                 </button>
+                </Link>
               </li>
               <li>
                 <button>

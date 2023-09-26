@@ -11,6 +11,7 @@ import Container from "./views/Container.jsx";
 import Booking from "./views/Booking.jsx";
 import ContainerForm from "./views/ContainerForm.jsx";
 import EditContainer from "./views/EditContainer.jsx";
+import Historic from "./views/Historic.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/container/new',
         element: <ContainerForm key="containerCreate" />
+      },
+      {
+        path: '/historic/:num_container',
+        element: <Historic />
       },
       {
         path: '/container/:id_container',

@@ -36,12 +36,12 @@ export default function Container() {
   const columns = [
     { name: "Id_container", selector: "id_container"},
     { name: "Number of container", selector: "num_container" },
-    { name: "Client", selector: "client_name" },
+    { name: "Client", selector: "client" },
     { name: "Type", selector: "type" },
     { name: "Category", selector: "category" },
     { name: "Status", selector: "status" },
     { name: "Line", selector: "line" },
-    { name: "Booking", selector: "booking_number" },
+    { name: "Booking", selector: "booking" },
     {
       cell: (row) => (
         <div>
@@ -76,9 +76,14 @@ export default function Container() {
       });
   };
 
-  useEffect(() => {
+  // Fonction pour mettre à jour les données des conteneurs après la suppression
+  const updateContainerData = () => {
     getContainer();
-  }, []);
+  };
+
+  useEffect(() => {
+    updateContainerData()
+  })
 
   useEffect(() => {
     const handleFilter = () => {
@@ -107,7 +112,7 @@ export default function Container() {
 
   return (
     <div>
-      <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+      <div style={{ maxHeight: "900px", overflowY: "auto" }}>
         <div
           style={{
             display: "flex",
@@ -118,8 +123,8 @@ export default function Container() {
           <h1>Container</h1>
           
           <div className="action">
-              <label class="search-box">
-                <button class="btn-search"><img className="info_icon" src={iconsImgs.loupe} alt=""/></button>
+              <label className="search-box">
+                <button className="btn-search"><img className="info_icon" src={iconsImgs.loupe} alt=""/></button>
                 <input type="text" className="input-search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Type to Search..."/>
               </label>
               <Link className="btn-add" to="/container/new">
@@ -135,7 +140,7 @@ export default function Container() {
             pagination
           />
         </div>
-        {modalOpen && <InfoContainer selectedId={id_get} setOpenModal={setModalOpen} />}
+        {modalOpen && <InfoContainer selectedId={id_get} setOpenModal={setModalOpen} onUpdateContainerData={updateContainerData} />}
       </div>
     </div>
   );
