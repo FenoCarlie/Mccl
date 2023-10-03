@@ -5,7 +5,6 @@ import axios from "axios";
 
 export default function Signup() {
   const nameRef = createRef();
-  const positionRef = createRef();
   const reg_numberRef = createRef();
   const passwordRef = createRef();
   const passwordConfirmationRef = createRef();
@@ -16,7 +15,6 @@ export default function Signup() {
     ev.preventDefault();
 
     const payload = {
-      position: positionRef.current.value,
       name: nameRef.current.value,
       reg_number: reg_numberRef.current.value,
       password: passwordRef.current.value,
@@ -49,8 +47,7 @@ export default function Signup() {
             </div>
           )}
           <input ref={nameRef} type="text" placeholder="Full Name" />
-          <input ref={positionRef} type="text" placeholder="position" />
-          <input ref={reg_numberRef} type="text" placeholder="reg_numberRef" />
+          <input ref={reg_numberRef} type="text" placeholder="Email Address" />
           <input ref={passwordRef} type="password" placeholder="Password" />
           <input
             ref={passwordConfirmationRef}

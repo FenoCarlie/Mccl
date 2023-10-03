@@ -28,13 +28,11 @@ db.connect((err) => {
 });
 
 app.get("/user", (req, res, next) => {
-  const { reg_number } = req.user; // Assuming the logged-in user's registration number is stored in req.user
-
-  const sql = "SELECT * FROM user WHERE reg_number = ?";
-  db.query(sql, [reg_number], (err, data) => {
+  const sql = "select * from user;";
+  db.query(sql, (err, data) => {
     if (err) {
-      console.error("error retrieving data: " + err.message);
-      next(err); // pass the error to the global error handling middleware
+      console.error("Error retrieving data: " + err.message);
+      next(err); // Passer l'erreur au middleware de gestion d'erreur global
     } else {
       res.json(data);
     }
@@ -302,7 +300,7 @@ app.put("/container/:id_container", (req, res) => {
 });
 app.put("/container/get_out/:id_container", (req, res) => {
   const containerId = req.params.id_container;
-  const updatedDateOut = req.body.date_out;
+  const updatedDateOut = req.body.date_out; // Obtenir la nouvelle date_out depuis le corps de la requête
 
   db.query(
     "UPDATE container SET date_out = ? WHERE id_container = ?",

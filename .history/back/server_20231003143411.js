@@ -28,13 +28,11 @@ db.connect((err) => {
 });
 
 app.get("/user", (req, res, next) => {
-  const { reg_number } = req.user; // Assuming the logged-in user's registration number is stored in req.user
-
-  const sql = "SELECT * FROM user WHERE reg_number = ?";
-  db.query(sql, [reg_number], (err, data) => {
+  const sql = "select * from user;";
+  db.query(sql, (err, data) => {
     if (err) {
-      console.error("error retrieving data: " + err.message);
-      next(err); // pass the error to the global error handling middleware
+      console.error("Error retrieving data: " + err.message);
+      next(err); // Passer l'erreur au middleware de gestion d'erreur global
     } else {
       res.json(data);
     }
@@ -302,7 +300,7 @@ app.put("/container/:id_container", (req, res) => {
 });
 app.put("/container/get_out/:id_container", (req, res) => {
   const containerId = req.params.id_container;
-  const updatedDateOut = req.body.date_out;
+  const updatedDateOut = req.body.date_out; // Obtenir la nouvelle date_out depuis le corps de la requête
 
   db.query(
     "UPDATE container SET date_out = ? WHERE id_container = ?",
@@ -396,16 +394,18 @@ app.post("/login", (req, res) => {
   const { reg_number, password } = req.body;
 
   // check if the user exists in the database
-  const sql = "select * from user where reg_number = ?";
+  const sql = "SELECT * FROM user WHERE reg_number = ?";
   db.query(sql, [reg_number], (err, results) => {
     if (err) {
-      console.error("error fetching user:", err);
-      return res.status(500).json({ error: "error fetching user" });
+      console.error("Error fetching user:", err);
+      return res.status(500).json({ error: "Error fetching user" });
     }
 
     // check if the user exists
     if (results.length === 0) {
-      return res.status(401).json({ error: "invalid credentials" });
+      return res
+        .status(401)
+        .json({ error: "Invalid credentials // Check if the user exists" });
     }
 
     const user = results[0];
@@ -413,51 +413,19 @@ app.post("/login", (req, res) => {
     // compare the hashed password with the plain text password
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err) {
-        console.error("error comparing passwords:", err);
-        return res.status(500).json({ error: "error comparing passwords" });
+        console.error("Error comparing passwords:", err);
+        return res.status(500).json({ error: "Error comparing passwords" });
       }
 
       if (!isMatch) {
         return res.status(401).json({
-          error: "invalid credentials",
+          error:
+            "Invalid credentials // Compare the hashed password with the plain text password",
         });
       }
 
       // passwords match, return success response
-      res.json({ message: "login successful", user });
-    });
-  });
-});
-
-app.post("/signup", (req, res) => {
-  const { reg_number, password, name, position } = req.body;
-
-  // generate a salt
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      console.error("error generating salt:", err);
-      return res.status(500).json({ error: "error generating salt" });
-    }
-
-    // hash the password with the generated salt
-    bcrypt.hash(password, salt, (err, hash) => {
-      if (err) {
-        console.error("error hashing password:", err);
-        return res.status(500).json({ error: "error hashing password" });
-      }
-
-      // store the hashed password in the database
-      const sql =
-        "INSERT INTO user (reg_number, password, name, position) VALUES (?, ?, ?, ?)";
-      db.query(sql, [reg_number, hash, name, position], (err) => {
-        if (err) {
-          console.error("error storing user:", err);
-          return res.status(500).json({ error: "error storing user" });
-        }
-
-        // registration successful
-        res.json({ message: "registration successful" });
-      });
+      res.json({ message: "Login successful", user });
     });
   });
 });

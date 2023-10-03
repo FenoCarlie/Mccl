@@ -16,7 +16,7 @@ export default function DefaultLayout() {
     ev.preventDefault();
 
     axiosClient
-      .post("http://localhost:8081/logout")
+      .post("/logout")
       .then(() => {
         setUser({});
         setToken(null);
@@ -46,7 +46,7 @@ export default function DefaultLayout() {
 
   return (
     <div id="defaultLayout">
-      {console.log(user)}
+      {console.log(user.name)}
       <aside className="nav-item">
         <NavLink to="/dashboard" className="nav-link">
           <img

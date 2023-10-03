@@ -11,7 +11,7 @@ const StateContext = createContext({
 
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [token, setToken] = useState();
   const [notification, setNotification] = useState("");
 
   const setTokenWithLogging = (newToken) => {

@@ -50,7 +50,7 @@ export default function Signup() {
           )}
           <input ref={nameRef} type="text" placeholder="Full Name" />
           <input ref={positionRef} type="text" placeholder="position" />
-          <input ref={reg_numberRef} type="text" placeholder="reg_numberRef" />
+          <input ref={reg_numberRef} type="text" placeholder="Email Address" />
           <input ref={passwordRef} type="password" placeholder="Password" />
           <input
             ref={passwordConfirmationRef}

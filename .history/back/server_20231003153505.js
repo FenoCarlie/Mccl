@@ -28,13 +28,11 @@ db.connect((err) => {
 });
 
 app.get("/user", (req, res, next) => {
-  const { reg_number } = req.user; // Assuming the logged-in user's registration number is stored in req.user
-
-  const sql = "SELECT * FROM user WHERE reg_number = ?";
-  db.query(sql, [reg_number], (err, data) => {
+  const sql = "select * from user;";
+  db.query(sql, (err, data) => {
     if (err) {
-      console.error("error retrieving data: " + err.message);
-      next(err); // pass the error to the global error handling middleware
+      console.error("Error retrieving data: " + err.message);
+      next(err); // Passer l'erreur au middleware de gestion d'erreur global
     } else {
       res.json(data);
     }

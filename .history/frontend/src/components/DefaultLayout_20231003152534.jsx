@@ -1,22 +1,44 @@
 import { Link, NavLink, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../context/ContextProvider";
 import axiosClient from "../axios-client.js";
-import { useEffect, useState } from "react"; // Ajout de useState
+import { useEffect, useState } from "react";
 import { iconsImgs } from "../icon/icone";
 import axios from "axios";
 
 export default function DefaultLayout() {
   const { user, token, setUser, setToken, notification } = useStateContext();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Ajout de l'état de chargement
 
   if (!token) {
     return <Navigate to="/login" />;
   }
+
+  const getUser = () => {
+    axios
+      .get("http://localhost:8081/user")
+      .then(({ data }) => {
+        setUser(data);
+        setLoading(false); // fin du chargement
+        console.log("In context provider");
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la récupération des données utilisateur :",
+          error
+        );
+        setLoading(false); // fin du chargement en cas d'erreur
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+  });
+
   const onLogout = (ev) => {
     ev.preventDefault();
 
     axiosClient
-      .post("http://localhost:8081/logout")
+      .post("/logout")
       .then(() => {
         setUser({});
         setToken(null);
@@ -26,27 +48,9 @@ export default function DefaultLayout() {
       });
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/user")
-      .then(({ data }) => {
-        setUser(data);
-        setLoading(false); // fin du chargement
-        console.log("In context provider");
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(
-          "Erreur lors de la récupération des données utilisateur :",
-          error
-        );
-        setLoading(false); // fin du chargement en cas d'erreur
-      });
-  }, []);
-
   return (
     <div id="defaultLayout">
-      {console.log(user)}
+      {console.log(user.name)}
       <aside className="nav-item">
         <NavLink to="/dashboard" className="nav-link">
           <img

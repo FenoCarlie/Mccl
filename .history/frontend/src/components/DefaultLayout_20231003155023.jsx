@@ -16,7 +16,7 @@ export default function DefaultLayout() {
     ev.preventDefault();
 
     axiosClient
-      .post("http://localhost:8081/logout")
+      .post("/logout")
       .then(() => {
         setUser({});
         setToken(null);
