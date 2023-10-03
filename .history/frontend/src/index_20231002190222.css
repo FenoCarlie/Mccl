@@ -947,3 +947,7 @@ table > tbody > tr > td {
   width: 2rem;
   height: 2rem;
 }
+
+.char-function {
+  width: 150px;
+}

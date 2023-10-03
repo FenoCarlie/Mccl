@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -93,7 +93,7 @@ function Dashboard() {
             const dateObj = new Date(item.date);
             const year = dateObj.getFullYear();
             const weekNumber = getWeek(dateObj);
-            const dateKey = `${year}-${weekNumber}`;
+            const dateKey = `${year}-W${weekNumber}`;
 
             acc[dateKey] = acc[dateKey] || {
               date: dateKey,
@@ -150,68 +150,54 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <div className="card">
-        <div className="action">
-          <div className="align">
-            <div>
-              <label>Start date :</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={handleStartDateChange}
-              />
-            </div>
-            <div>
-              <label>End date :</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={handleEndDateChange}
-              />
-            </div>
-            <div className="select-time-unit">
-              <label>Time unit :</label>
-              <select onChange={handleTimeUnitChange} value={timeUnit}>
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <ResponsiveContainer width="100%" height={450}>
-          <LineChart
-            width={400}
-            height={200}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="importCount"
-              name="Import"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type="monotone"
-              dataKey="exportCount"
-              name="Export"
-              stroke="#82ca9d"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+      <div>
+        <label>Unité de temps :</label>
+        <select onChange={handleTimeUnitChange} value={timeUnit}>
+          <option value="month">Par mois</option>
+          <option value="day">Par jour</option>
+          <option value="week">Par semaine</option>
+        </select>
       </div>
+      <div>
+        <label>Date de début :</label>
+        <input type="date" value={startDate} onChange={handleStartDateChange} />
+      </div>
+      <div>
+        <label>Date de fin :</label>
+        <input type="date" value={endDate} onChange={handleEndDateChange} />
+      </div>
+      <ResponsiveContainer width="100%" height={450}>
+        <LineChart
+          width={400}
+          height={200}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="importCount"
+            name="Import"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="exportCount"
+            name="Export"
+            stroke="#82ca9d"
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

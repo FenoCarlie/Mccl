@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -153,21 +153,23 @@ function Dashboard() {
       <div className="card">
         <div className="action">
           <div className="align">
-            <div>
-              <label>Start date :</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={handleStartDateChange}
-              />
-            </div>
-            <div>
-              <label>End date :</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={handleEndDateChange}
-              />
+            <div className="in-date align">
+              <div>
+                <label>Start date :</label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                />
+              </div>
+              <div>
+                <label>End date :</label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={handleEndDateChange}
+                />
+              </div>
             </div>
             <div className="select-time-unit">
               <label>Time unit :</label>

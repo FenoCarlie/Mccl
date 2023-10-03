@@ -11,28 +11,24 @@ const StateContext = createContext({
 
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  const [token, setToken] = useState();
-  const [notification, setNotification] = useState("");
+  const [token, _setToken] = useState();
+  const [notification, _setNotification] = useState("");
 
-  const setTokenWithLogging = (newToken) => {
-    setToken(newToken);
-    if (newToken) {
-      localStorage.setItem("token", newToken);
-      console.log("Token stored in localStorage:", newToken);
+  const setToken = (token) => {
+    _setToken(token);
+    if (token) {
+      localStorage.setItem("TOKEN", token);
     } else {
-      localStorage.removeItem("token");
-      console.log("Token removed from localStorage.");
+      localStorage.removeItem("TOKEN");
     }
   };
 
-  const setNotificationWithLogging = (message) => {
-    setNotification(message);
+  const setNotification = (message) => {
+    _setNotification(message);
 
     setTimeout(() => {
-      setNotification("");
+      _setNotification("");
     }, 5000);
-
-    console.log("Notification set:", message);
   };
 
   return (
@@ -41,9 +37,9 @@ export const ContextProvider = ({ children }) => {
         user,
         setUser,
         token,
-        setToken: setTokenWithLogging,
+        setToken,
         notification,
-        setNotification: setNotificationWithLogging,
+        setNotification,
       }}
     >
       {children}

@@ -947,3 +947,7 @@ table > tbody > tr > td {
   width: 2rem;
   height: 2rem;
 }
+
+.in-date {
+  left: 15px;
+}

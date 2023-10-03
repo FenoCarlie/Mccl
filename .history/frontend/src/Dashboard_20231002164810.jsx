@@ -10,37 +10,23 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import axios from "axios";
-import { format, addMonths } from "date-fns";
 
 function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [timeUnit, setTimeUnit] = useState("month");
-  const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [endDate, setEndDate] = useState(
-    format(addMonths(new Date(), 1), "yyyy-MM-dd")
-  );
-
-  const handleStartDateChange = (event) => {
-    setStartDate(event.target.value);
-  };
-
-  const handleEndDateChange = (event) => {
-    setEndDate(event.target.value);
-  };
+  const [timeUnit, setTimeUnit] = useState("month"); // Par défaut, par mois
 
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:8081/api/import-export?start_date=${startDate}&end_date=${endDate}`
-      )
+      .get("http://localhost:8081/api/import-export")
       .then((response) => {
         const formattedData = response.data.map((item) => ({
           category: item.category,
           date: item.date,
         }));
 
+        // Fonction pour agréger les données par mois
         const aggregateDataByMonth = (data) => {
           const aggregatedData = data.reduce((acc, item) => {
             const dateParts = item.date.split("-");
@@ -66,54 +52,24 @@ function Dashboard() {
           return Object.values(aggregatedData);
         };
 
+        // Fonction pour agréger les données par jour
         const aggregateDataByDay = (data) => {
-          const aggregatedData = data.reduce((acc, item) => {
-            const dateParts = item.date.split("T")[0];
+          // Code d'agrégation par jour
+          // ...
 
-            acc[dateParts] = acc[dateParts] || {
-              date: dateParts,
-              importCount: 0,
-              exportCount: 0,
-            };
-
-            if (item.category === "Import") {
-              acc[dateParts].importCount++;
-            } else if (item.category === "Export") {
-              acc[dateParts].exportCount++;
-            }
-
-            return acc;
-          }, {});
-
-          return Object.values(aggregatedData);
+          return aggregatedData;
         };
 
+        // Fonction pour agréger les données par semaine
         const aggregateDataByWeek = (data) => {
-          const aggregatedData = data.reduce((acc, item) => {
-            const dateObj = new Date(item.date);
-            const year = dateObj.getFullYear();
-            const weekNumber = getWeek(dateObj);
-            const dateKey = `${year}-W${weekNumber}`;
+          // Code d'agrégation par semaine
+          // ...
 
-            acc[dateKey] = acc[dateKey] || {
-              date: dateKey,
-              importCount: 0,
-              exportCount: 0,
-            };
-
-            if (item.category === "Import") {
-              acc[dateKey].importCount++;
-            } else if (item.category === "Export") {
-              acc[dateKey].exportCount++;
-            }
-
-            return acc;
-          }, {});
-
-          return Object.values(aggregatedData);
+          return aggregatedData;
         };
 
-        let chartData = formattedData;
+        // Choisissez la fonction d'agrégation en fonction de l'unité de temps
+        let chartData = formattedData; // Par défaut, utilisez les données brutes
 
         if (timeUnit === "month") {
           chartData = aggregateDataByMonth(formattedData);
@@ -132,7 +88,7 @@ function Dashboard() {
         );
         setLoading(false);
       });
-  }, [timeUnit, startDate, endDate]);
+  }, [timeUnit]);
 
   const handleTimeUnitChange = (event) => {
     const selectedTimeUnit = event.target.value;
@@ -157,14 +113,6 @@ function Dashboard() {
           <option value="day">Par jour</option>
           <option value="week">Par semaine</option>
         </select>
-      </div>
-      <div>
-        <label>Date de début :</label>
-        <input type="date" value={startDate} onChange={handleStartDateChange} />
-      </div>
-      <div>
-        <label>Date de fin :</label>
-        <input type="date" value={endDate} onChange={handleEndDateChange} />
       </div>
       <ResponsiveContainer width="100%" height={450}>
         <LineChart

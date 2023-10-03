@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -150,35 +150,7 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <div className="card">
-        <div className="action">
-          <div className="align">
-            <div>
-              <label>Start date :</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={handleStartDateChange}
-              />
-            </div>
-            <div>
-              <label>End date :</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={handleEndDateChange}
-              />
-            </div>
-            <div className="select-time-unit">
-              <label>Time unit :</label>
-              <select onChange={handleTimeUnitChange} value={timeUnit}>
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-              </select>
-            </div>
-          </div>
-        </div>
+      <div className="align">
         <ResponsiveContainer width="100%" height={450}>
           <LineChart
             width={400}
@@ -211,6 +183,34 @@ function Dashboard() {
             />
           </LineChart>
         </ResponsiveContainer>
+        <div className="card">
+          <div className="select-time-unit">
+            <label>Time unit :</label>
+            <select onChange={handleTimeUnitChange} value={timeUnit}>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+            </select>
+          </div>
+          <div className="in-date">
+            <div>
+              <label>Start date :</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={handleStartDateChange}
+              />
+            </div>
+            <div>
+              <label>End date :</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={handleEndDateChange}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

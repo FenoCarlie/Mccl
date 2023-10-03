@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
   currentUser: null,
@@ -14,36 +14,32 @@ export const ContextProvider = ({ children }) => {
   const [token, setToken] = useState();
   const [notification, setNotification] = useState("");
 
-  const setTokenWithLogging = (newToken) => {
-    setToken(newToken);
-    if (newToken) {
-      localStorage.setItem("token", newToken);
-      console.log("Token stored in localStorage:", newToken);
+  const setTokenWithLocalStorage = (token) => {
+    setToken(token);
+    if (token) {
+      localStorage.setItem("token", token);
     } else {
       localStorage.removeItem("token");
-      console.log("Token removed from localStorage.");
     }
   };
 
-  const setNotificationWithLogging = (message) => {
+  const setNotificationWithTimeout = (message) => {
     setNotification(message);
 
     setTimeout(() => {
       setNotification("");
     }, 5000);
-
-    console.log("Notification set:", message);
   };
 
   return (
     <StateContext.Provider
       value={{
-        user,
+        currentUser: user,
         setUser,
         token,
-        setToken: setTokenWithLogging,
+        setToken: setTokenWithLocalStorage,
         notification,
-        setNotification: setNotificationWithLogging,
+        setNotification: setNotificationWithTimeout,
       }}
     >
       {children}

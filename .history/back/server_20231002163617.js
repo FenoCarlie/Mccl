@@ -353,16 +353,10 @@ app.get("/data", (req, res) => {
 });
 
 app.get("/api/import-export", (req, res) => {
-  const { start_date, end_date } = req.query;
+  const query =
+    "SELECT category, date_in as date FROM container ORDER BY date ASC;";
 
-  const query = `
-    SELECT category, date_in as date 
-    FROM container 
-    WHERE date_in >= ? AND date_in <= ?
-    ORDER BY date ASC;
-  `;
-
-  db.query(query, [start_date, end_date], (err, results) => {
+  db.query(query, (err, results) => {
     if (err) {
       console.error("Erreur lors de l'exécution de la requête :", err);
       res
@@ -373,7 +367,6 @@ app.get("/api/import-export", (req, res) => {
     }
   });
 });
-
 app.get("/api/progress_false", (req, res) => {
   const query = "SELECT * FROM container WHERE progress = FALSE;";
 
